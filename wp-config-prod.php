@@ -16,13 +16,15 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
+define('WP_CACHE', true); //Added by WP-Cache Manager
+define( 'WPCACHEHOME', '/Users/lgrcyanny/Sites/myblog/wp-content/plugins/wp-super-cache/' ); //Added by WP-Cache Manager
 define('DB_NAME', 'cyannyblog');
 
 /** MySQL database username */
-define('DB_USER', 'root');
+define('DB_USER', 'cyannyblog');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'root2013');
+define('DB_PASSWORD', 'cyannyblog2013');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');

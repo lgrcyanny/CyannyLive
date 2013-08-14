@@ -1,5 +1,6 @@
 #!/bin/sh
-export DATABASE_DIR=databases
-mysqldump -u root -proot cyannyblog > $DATABASE_DIR/db.sql
-tar -czvf $DATABASE_DIR/db.tar.gz $DATABASE_DIR/db.sql
-rm $DATABASE_DIR/db.sql
+export DATABASE_DIR=/Users/lgrcyanny/Sites/myblog/wp-content/backup-db
+cd $DATABASE_DIR
+mysqldump -u root -proot cyannyblog > db.sql
+tar -czvf db.tar.gz db.sql
+rm db.sql

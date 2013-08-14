@@ -1,4 +1,4 @@
 wp-config.php
 uploads/*
 wp-cache/*
-build/databases/*.sql
+wp-content/cache
