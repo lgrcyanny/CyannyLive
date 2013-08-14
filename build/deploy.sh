@@ -1,5 +1,5 @@
 #!/bin/bash
-export BLOG_ROOT_DIR = /var/www/html/cyannyblog
+export BLOG_ROOT_DIR="$( cd "$(dirname "$( dirname "${BASH_SOURCE[0]}" )")" && pwd )"
 # Git update
 git pull origin master
 # Change mod, grant access right
