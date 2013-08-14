@@ -21,7 +21,7 @@ define( 'WPCACHEHOME', '/Users/lgrcyanny/Sites/myblog/wp-content/plugins/wp-supe
 define('DB_NAME', 'cyannyblog');
 
 /** MySQL database username */
-define('DB_USER', 'cyannyblog');
+define('DB_USER', 'cyanny');
 
 /** MySQL database password */
 define('DB_PASSWORD', 'cyannyblog2013');
