@@ -1,0 +1,21 @@
+tr.menu-item .drag-handle {
+	cursor: move;
+}
+
+tr.menu-item label {
+	display:block;
+}
+
+tr.menu-item label span {
+	display: block;
+	float:left;
+	width: 80px;
+}
+
+tr.menu-item a.add, tr.menu-item a.remove {
+	display: block;
+}
+
+tr.menu-item a.add {
+	display: none;
+}

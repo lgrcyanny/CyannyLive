@@ -1,0 +1,12 @@
+/* Dark */
+
+body {
+	background: #111 !important;
+}
+
+#header h1 a, h2 a, #nav, #nav li a {
+	color: #eee;
+}
+hr, #content {
+	border-color: #333;
+}
