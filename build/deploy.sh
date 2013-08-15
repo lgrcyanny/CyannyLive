@@ -8,7 +8,7 @@ git clone git@github.com:lgrcyanny/CyannyLive.git cyannyblog
 
 # Change mod, grant access right
 chmod -R 755 $BLOG_ROOT_DIR
-chmod -R 775 $BLOG_ROOT_DIR/wp-content
+chmod -R 777 $BLOG_ROOT_DIR/wp-content
 
 # Add config
 rm -f $BLOG_ROOT_DIR/wp-config.php
