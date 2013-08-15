@@ -15,6 +15,8 @@ rm -f $BLOG_ROOT_DIR/wp-config.php
 cp $BLOG_ROOT_DIR/wp-config-prod.php $BLOG_ROOT_DIR/wp-config.php
 
 # Add .htaccess
+cd $BLOG_ROOT_DIR
+rm -f .htaccess
 cp htaccess.prod .htaccess
 
 # Import data to mysql
