@@ -14,6 +14,9 @@ chmod -R 775 $BLOG_ROOT_DIR/wp-content
 rm -f $BLOG_ROOT_DIR/wp-config.php
 cp $BLOG_ROOT_DIR/wp-config-prod.php $BLOG_ROOT_DIR/wp-config.php
 
+# Add .htaccess
+cp htaccess.prod .htaccess
+
 # Import data to mysql
 cd $BLOG_DATABASES_DIR
 tar -xvf db.tar.gz
