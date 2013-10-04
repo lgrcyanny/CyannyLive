@@ -40,7 +40,16 @@
 <link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> RSS Feed" href="<?php bloginfo('rss2_url'); ?>" />
 <link rel="alternate" type="application/atom+xml" title="<?php bloginfo('name'); ?> Atom Feed" href="<?php bloginfo('atom_url'); ?>" />
 <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
-
+<script type="text/javascript">
+	// Cyanny fix the bug for read more link
+	$j = jQuery.noConflict();
+	$j(document).ready(function() {
+	    var brchildren = $j("div.entry a[title='Read more...']").siblings(':nth-last-child(2)').children();
+	    for (var i = brchildren.length - 1; i >= 5; i--) {
+	    	brchildren[i].remove();
+	    }
+	});
+</script>
 <?php wp_head(); ?>
 
 </head>

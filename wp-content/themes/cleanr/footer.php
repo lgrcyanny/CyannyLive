@@ -10,6 +10,16 @@
 <?php wp_footer(); ?>
 
 </div>
+<script type="text/javascript">
+  // Cyanny fix the bug for read more link
+  $j = jQuery.noConflict();
+  $j(document).ready(function() {
+      var brchildren = $j("div.entry a[title='Read more...']").siblings(':nth-last-child(2)').children();
+      for (var i = brchildren.length - 1; i >= 5; i--) {
+        brchildren[i].remove();
+      }
+  });
+</script>
 
 </body>
 </html>
