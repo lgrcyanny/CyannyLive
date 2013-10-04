@@ -1,5 +1,14 @@
 <?php get_header(); ?>
-
+	<script type="text/javascript">
+		// Cyanny fix the bug for read more link
+		$j = jQuery.noConflict();
+		$j(document).ready(function() {
+		    var brchildren = $j("div.entry a[title='Read more...']").siblings(':nth-last-child(2)').children();
+		    for (var i = brchildren.length - 1; i >= 5; i--) {
+		    	brchildren[i].remove();
+		    }
+		});
+	</script>
 	<div class="grid_11">
 	<div id="content">
 
@@ -11,8 +20,8 @@
 			<span class="postmetadata"><?php the_category(' / ') ?> &mdash; <?php comments_popup_link('Leave a comment', '1 comment', '% comments'); ?> <?php edit_post_link( ' &mdash; Edit' ); ?></span><br/>
 			    <small><span class="datef"><?php the_time('d') ?></span><br /><?php the_time('M y') ?> <!-- by <?php the_author() ?> --></small>
 				<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
-				
-				
+
+
 
 				<div class="entry">
 					<?php  // if ( has_post_thumbnail() ) { the_post_thumbnail( 'featured' ); } ?>
@@ -29,8 +38,8 @@
 			<div class="alignright"><?php previous_posts_link('Newer Entries &rarr;') ?></div>
 			<div class="clearfix"></div>
 		</div>
-		
-		
+
+
 
 	<?php else : ?>
 
@@ -39,10 +48,10 @@
 		<?php //get_search_form(); ?>
 
 	<?php endif; ?>
-		
+
 
 	</div>
-	
+
 	</div>
 
 <?php get_sidebar(); ?>
