@@ -1,7 +1,7 @@
 === 3D Tag Cloud ===
 Contributors: vinoj.cardoza
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vinoj%2ecardoza%40gmail%2ecom&currency_code=GBP&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
-Tags: tag, tagcloud, cloud, 3D tagcloud
+Tags: tag, tagcloud, cloud, 3D tagcloud, tags, worpress, wordpress tags, wordpress tag
 Requires at least: 3.0
 Tested up to: 3.5
 Stable tag: trunk
@@ -28,11 +28,14 @@ New Configuration options been added to the admin panel. Now the site admin can 
 
 If you have any suggestions or feedback, please post it in the following link.
 
+= Support =
+Thanks for downloading and installing my plugin. You can show your appreciation and support future development by donating.
+
+Support Page: http://www.vinojcardoza.com/blog/cardoza-3d-tagcloud/
+
 = Translation =
 
-Translation is enabled for this plugin. If someone interested in translating this plugin please visit the following link and post in the comments section with your contact email. Thanks.
-
-For more visit: http://www.vinojcardoza.com/cardoza-3d-tagcloud/
+Translation is enabled for this plugin. If someone interested in translating this plugin please visit the following link and post in the comments section with your contact email. Thanks. 
 
 = Translated languages =
 
@@ -63,6 +66,9 @@ Uninstalling is as simple as deactivating the plugin.
 None yet, if you have one post it at http://www.vinojcardoza.com/cardoza-3d-tagcloud/
 
 == Changelog ==
+
+= Version 2.3 =
+* A minor modification updated to hide the ul list on page load.
 
 = Version 2.2 =
 * Border color setup with the background color.

@@ -1,11 +1,11 @@
 <?php
    /*
    Plugin Name: 3D tag cloud
-   Plugin URI: http://fingerfish.com/cardoza-3d-tagcloud/
+   Plugin URI: http://www.vinojcardoza.com/blog/cardoza-3d-tagcloud/
    Description: 3D tag cloud displays your tags in 3D by placing them on a rotating text.
-   Version: 2.2
+   Version: 2.3
    Author: Vinoj Cardoza
-   Author URI: http://fingerfish.com/about-me/
+   Author URI: http://www.vinojcardoza.com
    License: GPL2
    */
 
@@ -184,7 +184,7 @@ function widget_cardoza_3d_tagcloud($args){
         </div>
         <div id="tags">
                 
-		<ul style="
+		<ul style="display:none;
 		font-family: <?php if(!empty($option_value['font_name'])) echo $option_value['font_name'];
 			else echo "Calibri";?>;
 		height:
