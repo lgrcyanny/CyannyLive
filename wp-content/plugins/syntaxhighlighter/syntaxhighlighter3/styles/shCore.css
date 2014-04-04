@@ -51,6 +51,11 @@
   /*min-height: inherit !important; */
   /*min-height: auto !important;*/
   direction: ltr !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .syntaxhighlighter {
@@ -78,8 +83,6 @@
 }
 .syntaxhighlighter table {
   width: 100% !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
 }
 .syntaxhighlighter table caption {
   text-align: left !important;

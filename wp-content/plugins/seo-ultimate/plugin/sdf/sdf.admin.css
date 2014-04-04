@@ -24,17 +24,6 @@ body#media-upload .label,body#media-upload .badge {
 #adminmenu #toplevel_page_sdf-ultimate div.wp-menu-image:before {
     content: "";
 }
-#adminmenu .menu-icon-generic div.wp-menu-image,
-#adminmenu #toplevel_page_sdf-ultimate a div.wp-menu-image {
-	background: url("../img/logos/16x16_sdf_wp_icon.png") 5px 8px no-repeat !important; 
-	width:28px; 
-	height:28px;
-}
-#adminmenu #toplevel_page_sdf-ultimate a:hover div.wp-menu-image,
-#adminmenu #toplevel_page_sdf-ultimate.wp-menu-open a div.wp-menu-image,
-#adminmenu #toplevel_page_sdf-ultimate.wp-menu-open a:hover div.wp-menu-image {
-	background-image: url("../img/logos/16x16_sdf_hover_wp_icon.png") !important;
-}
 .sdf-admin .panel-heading a { color:#3f3f3f; }
 .sdf-admin .panel-heading a:hover { color:#000; text-decoration:none; }
 .sdf-admin .panel-heading.active a {background: url(../img/admin/glyphicons_367_expand.png) 8px center no-repeat; }
@@ -943,7 +932,9 @@ i[data-toggle="tooltip"] {
     text-align: right;
   }
 }
-.sdf-admin .panel-body [id*="-custom-bg"] .form-group:last-child {
+.sdf-admin .panel-body [id*="-custom-bg"] .form-group:last-child,
+.sdf-admin .panel-body [id*="-custom-wg-styles"] .form-group:last-child,
+.sdf-admin .panel-body [id*="widget_typo_"] .form-group:last-child {
     margin-bottom: 15px;
 }
 
@@ -1011,7 +1002,7 @@ i[data-toggle="tooltip"] {
 .sdf-custom-layout-box input.error-format { border-color: red; }
 .sdf-custom-layout-box .mask { margin: 10px 0 0; color: #444; }
 .sdf-custom-layout-box .error { display: none; margin: 2px 0 0; color: red; font-weight: bold; font-size: 11px; }
-.sdf-element { overflow: hidden; background: white; border: 1px solid #ccc; margin: 5px; position: relative; text-align: left; min-height: 73px;}
+.sdf-element { overflow: hidden; background: white; border: 1px solid #ccc; margin: 5px; position: relative; text-align: left; min-height: 73px; white-space: pre-wrap;}
 .sdf-element.ui-sortable-helper { opacity: 0.7; border-color: #888; }
 .sdf-element-content { position: relative; }
 .sdf-element-content .inner { font-size: 11px; line-height: 11px; }
@@ -1041,6 +1032,7 @@ i[data-toggle="tooltip"] {
 .sdf-templates-list-item .sdf-delete { float: right; }
 .sdf-template-load .sdf-icon { background: url(../img/sdf-icons/template-icon.png); }
 .sdf-template-save .sdf-icon { background: url(../img/sdf-icons/save-icon.png); }
+.sdf-image-load { position: absolute; left: -100000px; }
 
 /* fix for image upload modal box */
 #TB_window { z-index: 100002; }
