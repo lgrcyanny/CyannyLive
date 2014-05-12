@@ -6,10 +6,6 @@
 				div#secondary {
 					display: none;
 				}
-				div#primary #content{
-					margin-left: 210px;
-					width: 850px;
-				}
 			</style>
 			<div id="content" class="site-content" role="main">
 
