@@ -23,7 +23,7 @@ define('DB_NAME', 'cyannyblog');
 define('DB_USER', 'cyannyblog');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'cyannyblog2013');
+define('DB_PASSWORD', 'cyannyblog2014');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');

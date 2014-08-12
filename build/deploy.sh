@@ -22,4 +22,4 @@ cp htaccess.prod .htaccess
 # Import data to mysql
 cd $BLOG_DATABASES_DIR
 tar -xvf db.tar.gz
-mysql -u cyannyblog -pcyannyblog2013 -h localhost cyannyblog < db.sql
+mysql -u cyannyblog -pcyannyblog2014 -h localhost cyannyblog < db.sql
