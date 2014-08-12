@@ -132,7 +132,8 @@ function flat_customize_register( $wp_customize ) {
       'Bitter' => 'Bitter',
       'Arvo' => 'Arvo',
       'PT Serif' => 'PT Serif',
-      'Rokkitt' => 'Rokkitt'
+      'Rokkitt' => 'Rokkitt',
+      'Open Sans Condensed' => 'Open Sans Condensed',
     ),
   ));
   $wp_customize->add_setting('flat_theme_options[sub_heading_font_family]', array(
@@ -153,6 +154,80 @@ function flat_customize_register( $wp_customize ) {
       'Abel' => 'Abel',
       'News Cycle' => 'News Cycle'
     ),
+  ));
+  $wp_customize->add_section('layout_single', array(
+    'title'    => __('Single Post', 'flat'),
+    'priority' => 110,
+  ));
+  $wp_customize->add_setting('flat_theme_options[single_featured_image]', array(
+    'default'        => '1',
+    'capability'     => 'edit_theme_options',
+    'type'           => 'option',
+  ));
+  $wp_customize->add_control('single_featured_image', array(
+    'label'      => __('Hide Featured Image', 'flat'),
+    'section'    => 'layout_single',
+    'settings'   => 'flat_theme_options[single_featured_image]',
+    'type'       => 'checkbox'
+  ) );
+  $wp_customize->add_setting('flat_theme_options[single_metadata]', array(
+    'default'        => '0',
+    'capability'     => 'edit_theme_options',
+    'type'           => 'option',
+  ));
+  $wp_customize->add_control('single_metadata', array(
+    'label'      => __('Hide Metadata', 'flat'),
+    'section'    => 'layout_single',
+    'settings'   => 'flat_theme_options[single_metadata]',
+    'type'       => 'checkbox'
+  ) );
+  $wp_customize->add_setting('flat_theme_options[single_author_box]', array(
+    'default'        => '0',
+    'capability'     => 'edit_theme_options',
+    'type'           => 'option',
+  ));
+  $wp_customize->add_control('single_author_box', array(
+    'label'      => __('Hide Author Box', 'flat'),
+    'section'    => 'layout_single',
+    'settings'   => 'flat_theme_options[single_author_box]',
+    'type'       => 'checkbox'
+  ) );
+  $wp_customize->add_section('layout_archive', array(
+    'title'    => __('Archive Pages', 'flat'),
+    'priority' => 100,
+  ));
+  $wp_customize->add_setting('flat_theme_options[archive_featured_image]', array(
+    'default'        => '0',
+    'capability'     => 'edit_theme_options',
+    'type'           => 'option',
+  ));
+  $wp_customize->add_control('archive_featured_image', array(
+    'label'      => __('Hide Featured Image', 'flat'),
+    'section'    => 'layout_archive',
+    'settings'   => 'flat_theme_options[archive_featured_image]',
+    'type'       => 'checkbox'
+  ) );
+  $wp_customize->add_setting('flat_theme_options[archive_metadata]', array(
+    'default'        => '0',
+    'capability'     => 'edit_theme_options',
+    'type'           => 'option',
+  ));
+  $wp_customize->add_control('archive_metadata', array(
+    'label'      => __('Hide Metadata', 'flat'),
+    'section'    => 'layout_archive',
+    'settings'   => 'flat_theme_options[archive_metadata]',
+    'type'       => 'checkbox'
+  ));
+  $wp_customize->add_setting('flat_theme_options[archive_content]', array(
+    'default'        => '0',
+    'capability'     => 'edit_theme_options',
+    'type'           => 'option',
+  ));
+  $wp_customize->add_control('archive_content', array(
+    'label'      => __('Show Post Excerpt', 'flat'),
+    'section'    => 'layout_archive',
+    'settings'   => 'flat_theme_options[archive_content]',
+    'type'       => 'checkbox'
   ));
 }
 add_action( 'customize_register', 'flat_customize_register' );
@@ -248,7 +323,9 @@ function flat_custom_font() {
     }
 
     if( !empty($font_import) ) {
-      echo str_replace('family=|', 'family=', "<link href='http://fonts.googleapis.com/css?family=".str_replace(' ', '+', $font_import)."' rel='stylesheet' type='text/css'>");
+      $font_import = str_replace('Open Sans Condensed','Open Sans Condensed:300', $font_import);
+      $font_import = str_replace(' ', '+', $font_import);
+      echo str_replace('family=|', 'family=', "<link href='//fonts.googleapis.com/css?family=".$font_import."' rel='stylesheet' type='text/css'>");
       echo "<style type='text/css'>".$font_style."</style>";
     }
     

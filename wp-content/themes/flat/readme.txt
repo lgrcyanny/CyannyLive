@@ -19,38 +19,87 @@ Features list
  - Custom Sidebar Color
  - Editor Style
  - Twitter Bootstrap 3.1.1
- - Font Awesome 4.0.3
+ - Font Awesome 4.1.0
  - Write on HTML5 / LESS
- - Compatible up to WordPress 3.8.1
- - Customize: Logo, Favicon, Sidebar Background Color
+ - Compatible up to WordPress 3.9.1
+ - Customize: Logo, Favicon, Sidebar Background Color, Archive Posts, Single Post
  - Google Fonts select for Customize: Body, Site Title, Heading, Sub-Heading
- - Translation Ready (Language available: English, German, French)
+ - Translation Ready (Language available: English, German, French, Russian, Spanish, Brazil)
 
 Resources
 ----
 Flat is built with the following resources:
 
 Code based on DW Minion
-	- http://www.designwall.com/wordpress/themes/dw-minion/
-	- Copyright: DesignWall, http://www.designwall.com/
-	- License under GPL v3.0: http://www.gnu.org/licenses/gpl-3.0.html
+ - http://www.designwall.com/wordpress/themes/dw-minion/
+ - Copyright: DesignWall, http://www.designwall.com/
+ - License under GPL v3.0: http://www.gnu.org/licenses/gpl-3.0.html
 
 Bootstrap 3.1.1
-	- http://getbootstrap.com/
-	- Copyright: @mdo: twitter.com/mdo and @fat: twitter.com/fat
+ - http://getbootstrap.com/
+ - Copyright: @mdo: twitter.com/mdo and @fat: twitter.com/fat
 
-Icon Fonts: Font Awesome
-	- http://fortawesome.github.io/Font-Awesome/
-	- Copyright: Dave Gandy, twitter.com/davegandy
-	- Font Awesome licensed under SIL OFL 1.1: http://scripts.sil.org/OFL
-	- Code licensed under MIT License: http://opensource.org/licenses/mit-license.html
+Font Awesome 4.1.0
+ - http://fontawesome.io/
+ - Copyright: Dave Gandy, twitter.com/davegandy
+ - Font Awesome licensed under SIL OFL 1.1: http://scripts.sil.org/OFL
+ - Code licensed under MIT License: http://opensource.org/licenses/mit-license.html
 
-5 Blurred Backgrounds Vol.1
-	- http://graphicburger.com/5-blurred-backgrounds-vol-1/
-	- License: http://graphicburger.com/license/
+Contributers
+----
+ - Victor Perin: https://github.com/victorperin
+ - Victor Tsaran: https://github.com/vick08
+ - Darshan Sawardekar: https://github.com/dsawardekar
+ - Teddy Rilliot: https://github.com/TeddyRilliot
+ - Richard Alexander von Moltke Necochea: http://twitter.com/ravmn
+ - Фарух Джапаркулов
+ - Didier: http://www.wptrads.com/theme/flat-2/
+ - abovethewater: https://github.com/abovethewater
+ - Kevin Papst: http://www.kevinpapst.de/wordpress-flat-theme/
+ - Ashfame: https://github.com/ashfame
 
 Changelog
 ----
+1.3.8
+* Add: Brazil translation (Contribute by @victorperin)
+* Tweak: Accessibility: provide labels for menu buttons in the header (Contribute by @vick08)
+* Tweak: Improve page titles for better accessibility
+* Fix: SSL issue about Google Fonts load
+
+1.3.7
+* Tweak: Using Pagging instead of Next/Previous Posts button
+
+1.3.6
+* Tweak: Changed default background
+
+1.3.5
+* Tweak: Update German translation (Contribute by @kevinpapst)
+* Tweak: Update French translation (Contribute by @TeddyRilliot)
+* Tweak: Content display on Archive Pages
+
+1.3.4
+* Tweak: Change some default options
+
+1.3.3
+* Fix: Fatal error
+
+1.3.2
+* Fix: Syntax error on single post
+
+1.3.1
+* Tweak: Posts display options
+* Fix: Syntax error on single post
+
+1.3.0
+* Add: Posts display options (Contribute by @kevinpapst)
+* Add: Spanish translation (Contribute by Richard Alexander von Moltke Necochea)
+* Fix: Menu glitch with multiple level of navigation (Reported by @mokalovesoulmate)
+
+1.2.14
+* Tweak: Gear & Bars icons translatable (As Request of Swaroop)
+* Tweak: Add "Open Sans Condensed" to Heading font family list
+* Add: Russian translation (Contribute by Фарух Джапаркулов)
+
 1.2.13
 * Add: French translation (Contribute by Didier)
 
