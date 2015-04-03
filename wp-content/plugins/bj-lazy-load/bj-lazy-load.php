@@ -3,13 +3,13 @@
 Plugin Name: BJ Lazy Load
 Plugin URI: http://wordpress.org/extend/plugins/bj-lazy-load/
 Description: Lazy image loading makes your site load faster and saves bandwidth.
-Version: 0.7.3
+Version: 0.7.5
 Author: Bjørn Johansen
 Author URI: http://twitter.com/bjornjohansen
 Text Domain: bj-lazy-load
 License: GPL2
 
-    Copyright 2011–2013  Bjørn Johansen  (email : post@bjornjohansen.no)
+    Copyright 2011–2014  Bjørn Johansen  (email : post@bjornjohansen.no)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -33,7 +33,7 @@ require_once( dirname(__FILE__) . '/inc/class-bjll-skip-post.php' );
 if ( ! class_exists( 'BJLL' ) ) {
 	class BJLL {
 
-		const version = '0.7.3';
+		const version = '0.7.5';
 		protected $_placeholder_url;
 		protected $_skip_classes;
 		
@@ -77,6 +77,9 @@ if ( ! class_exists( 'BJLL' ) ) {
 			
 			if ( $options->get( 'filter_content' ) == 'yes' ) {
 				add_filter( 'the_content', array( $this, 'filter' ), 200 );
+			}
+			if ( $options->get( 'filter_widget_text' ) == 'yes' ) {
+				add_filter( 'widget_text', array( $this, 'filter' ), 200 );
 			}
 			if ( $options->get( 'filter_post_thumbnails' ) == 'yes' ) {
 				add_filter( 'post_thumbnail_html', array( $this, 'filter' ), 200 );
@@ -181,8 +184,8 @@ if ( ! class_exists( 'BJLL' ) ) {
 			
 			foreach ( $matches[0] as $imgHTML ) {
 				
-				// don't to the replacement if a skip class is provided and the image has the class
-				if ( ! ( is_array( $this->_skip_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) ) {
+				// don't to the replacement if a skip class is provided and the image has the class, or if the image is a data-uri
+				if ( ! ( is_array( $this->_skip_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/src=['\"]data:image/is", $imgHTML ) ) {
 					// replace the src and add the data-src attribute
 					$replaceHTML = preg_replace( '/<img(.*?)src=/is', '<img$1src="' . $this->_placeholder_url . '" data-lazy-type="image" data-lazy-src=', $imgHTML );
 					
@@ -237,6 +240,7 @@ if ( ! class_exists( 'BJLL' ) ) {
 		protected static function _get_options() {
 			return new scbOptions( 'bj_lazy_load_options', __FILE__, array(
 				'filter_content'          => 'yes',
+				'filter_widget_text'      => 'yes',
 				'filter_post_thumbnails'  => 'yes',
 				'filter_gravatars'        => 'yes',
 				'lazy_load_images'        => 'yes',

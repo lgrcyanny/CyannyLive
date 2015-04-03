@@ -17,7 +17,7 @@ Author URI: http://lucadioli.com/
 
 $options = array(
 	'read_more_link_text' => 'Read more...',
-	'read_more_link_br' => 0,
+	'read_more_link_br' => 2,
 	'read_more_link_home' => true,
 	'read_more_link_search' => true,
 	'read_more_link_tag' => true,
@@ -126,7 +126,7 @@ function rml_settings_page() {
 			var rmlLink = document.getElementById('read-more-link-link');
 			rmlLink.textContent = this.value;
 		};
-
+		
 		var rmlBrs = document.getElementById('read-more-link-brs');
 		for(i=0;i<document.rmlForm.read_more_link_br.length;i++){
 			document.rmlForm.read_more_link_br[i].onclick = function (){
@@ -142,7 +142,7 @@ function rml_settings_page() {
 			};
 		}
 	</script>
-	<?php
+	<?php 
 }
 
 
@@ -192,12 +192,12 @@ function add_more_link($content){
 
 function get_more_link(){
 	$link = get_option('read_more_link_text');
-	// $br = '';
-	// if(get_option('read_more_link_br') > 0){
-	// 	for($i=0;$i<get_option('read_more_link_br');$i++){
-	// 		$br .= '<br />';
-	// 	}
-	// }
+	$br = '';
+	if(get_option('read_more_link_br') > 0){
+		for($i=0;$i<get_option('read_more_link_br');$i++){
+			$br .= '<br />';
+		}
+	}
 	return $br.'<a href="'.get_permalink().'" title="'.$link.'">'.$link.'</a>';
 }
 

@@ -1,166 +1,281 @@
-<?php 
-if ( ! isset( $content_width ) )
-	$content_width = 720;
+<?php
+/**
+ * Flat initiation
+ *
+ * Initializes Flat's features and includes all necessary files.
+ *
+ * @package Flat
+ */
 
-function flat_setup() {
-    load_theme_textdomain( 'flat', get_template_directory() . '/languages' );
-
-	add_theme_support( 'automatic-feed-links' );
-	add_theme_support( 'structured-post-formats', array( 'link', 'video' ) );
-	add_theme_support( 'post-formats', array( 'aside', 'audio', 'chat', 'gallery', 'image', 'quote', 'status' ) );
-	register_nav_menu( 'primary', __( 'Navigation Menu', 'flat' ) );
-	add_theme_support( 'post-thumbnails' );
-	add_filter( 'use_default_gallery_style', '__return_false' );
-
-	// This theme styles the visual editor to resemble the theme style.
-	add_editor_style( array( 'assets/css/editor-style.css' ) );
-
-	$custom_background_support = array(
-		'default-color'          => '',
-		'default-image'          => get_template_directory_uri() . '/assets/img/default-background.jpg',
-		'wp-head-callback'       => '_custom_background_cb',
-		'admin-head-callback'    => '',
-		'admin-preview-callback' => ''
-	);
-	add_theme_support( 'custom-background', $custom_background_support );
+# Prevent direct access to this file
+if ( 1 == count( get_included_files() ) ) {
+	header( 'HTTP/1.1 403 Forbidden' );
+	die( 'Direct access of this file is prohibited. Thank you.' );
 }
+
+/**
+ * File inclusions
+ */
+require get_template_directory() . '/inc/customize.php'; # Enables user customization via admin panel
+require get_template_directory() . '/inc/hooks.php'; # Enables user customization via WordPress plugin API
+require get_template_directory() . '/inc/template-tags.php'; # Contains functions that output HTML
+
+/**
+ * Set the max width for embedded content
+ *
+ * @link http://codex.wordpress.org/Content_Width
+ */
+if ( ! isset( $content_width ) ) {
+	$content_width = 720;
+}
+
+if ( ! function_exists( 'flat_setup' ) ) :
+	/**
+	 * Sets up theme defaults and registers support for various WordPress features.
+	 */
+	function flat_setup() {
+		# Localization
+		load_theme_textdomain( 'flat', get_template_directory() . '/languages' );
+
+		# Enable WordPress theme features
+		add_theme_support( 'automatic-feed-links' ); # @link http://codex.wordpress.org/Automatic_Feed_Links
+		$custom_background_support = array(
+			'default-color'          => '',
+			'default-image'          => get_template_directory_uri() . '/assets/img/default-background.jpg',
+			'wp-head-callback'       => '_custom_background_cb',
+			'admin-head-callback'    => '',
+			'admin-preview-callback' => '',
+		);
+		/* tgm-plugin-activation */
+        require_once get_template_directory() . '/class-tgm-plugin-activation.php';
+		add_theme_support( 'custom-background', $custom_background_support ); # @link http://codex.wordpress.org/Custom_Backgrounds
+		add_theme_support( 'post-formats', array( 'aside', 'audio', 'chat', 'gallery', 'image', 'quote', 'status' ) ); # @link http://codex.wordpress.org/Post%20Formats
+		add_theme_support( 'post-thumbnails' ); # @link http://codex.wordpress.org/Post%20Thumbnails
+		add_theme_support( 'structured-post-formats', array( 'link', 'video' ) );
+		add_theme_support( 'title-tag' ); # @link http://codex.wordpress.org/Title_Tag
+		add_theme_support( 'tha-hooks', array( 'all' ) ); # @link https://github.com/zamoose/themehookalliance
+
+		# Add style to the post editor for a more WYSIWYG experience
+		add_editor_style( array( 'assets/css/editor-style.css' ) );
+
+		# Flat has one navigation menu; register it with WordPress
+		register_nav_menu( 'primary', __( 'Navigation Menu', 'flat' ) );
+
+		# Add filters
+		add_filter( 'comments_popup_link_attributes', function() { return ' itemprop="discussionUrl"'; } ); # schema.org property on comments links
+		add_filter( 'current_theme_supports-tha_hooks', '__return_true' ); # Enables checking for THA hooks
+		add_filter( 'style_loader_tag', 'flat_filter_styles', 10, 2 ); # Filters style tags as needed
+		add_filter( 'the_content_more_link', 'modify_read_more_link' ); # Enhances appearance of "Read more..." link
+		add_filter( 'use_default_gallery_style', '__return_false' ); # Disable default WordPress gallery styling
+		remove_filter( 'the_content','cwp_pac_before_content');
+
+		# Add actions
+		add_action( 'flat_html_before', 'flat_doctype' ); # Outputs HTML doctype
+		add_action( 'flat_404_content', 'flat_output_404_content' ); # Outputs a helpful message on 404 pages
+		add_action( 'widgets_init', 'flat_widgets_init' ); # Registers Flat's sidebar
+		add_action( 'wp_enqueue_scripts', 'flat_scripts_styles' ); # Enqueue's Flat's scripts & styles
+	}
+endif;
 add_action( 'after_setup_theme', 'flat_setup' );
 
-function flat_scripts_styles() {
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) )
-		wp_enqueue_script( 'comment-reply' );
-	wp_enqueue_style( 'flat-template', get_template_directory_uri() . '/assets/css/template.css', array(), '1.3.7' );
-	wp_enqueue_style( 'flat-style', get_stylesheet_uri(), array(), '1.3.7' );
-	wp_enqueue_script( 'flat-bootstrap', get_template_directory_uri() . '/assets/js/bootstrap-3.1.1.min.js', array( 'jquery' ), '3.1.1', true );
-    wp_enqueue_script( 'flat-functions', get_template_directory_uri() . '/assets/js/functions.js', array( 'jquery', 'flat-bootstrap' ), '1.3.7', true );
-}
-add_action( 'wp_enqueue_scripts', 'flat_scripts_styles' );
+// unregister all widgets
+ function flat_remove_review_widgets() {
+     unregister_widget('cwp_latest_products_widget');
+     unregister_widget('cwp_top_products_widget');
 
-function flat_ie_support_header() {
-    echo '<!--[if lt IE 9]>'. "\n";
-    echo '<script src="' . esc_url( get_template_directory_uri() . '/assets/js/html5shiv.js' ) . '"></script>'. "\n";
-    echo '<script src="' . esc_url( get_template_directory_uri() . '/assets/js/respond.min.js' ) . '"></script>'. "\n";
-    echo '<![endif]-->'. "\n";
-}
-add_action( 'wp_head', 'flat_ie_support_header' );
+ }
+ add_action('widgets_init', 'flat_remove_review_widgets', 11);
 
-function flat_widgets_init() {
-	register_sidebar( array(
-		'name'          => __( 'Main Widget Area', 'flat' ),
-		'id'            => 'sidebar-1',
-		'description'   => __( 'Appears in the sidebar section of the site', 'flat' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget'  => '</aside>',
-		'before_title'  => '<h3 class="widget-title">',
-		'after_title'   => '</h3>',
-	) );
-}
-add_action( 'widgets_init', 'flat_widgets_init' );
-
-function flat_entry_meta( $show_sep = true ) {
-    // Set up and print post meta information.
-	printf( __('<span class="entry-date"><a href="%1$s" rel="bookmark"><time class="entry-date" datetime="%2$s">%3$s</time></a></span> by <span class="byline"><span class="author vcard"><a class="url fn n" href="%4$s" rel="author">%5$s</a></span></span>', 'flat'),
-		esc_url( get_permalink() ),
-		esc_attr( get_the_date( 'c' ) ),
-		esc_html( get_the_date() ),
-		esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
-		get_the_author()
-	);
-
-    if( $show_sep == true ) echo '<span class="sep">&middot;</span>';
-    echo '<span class="comments-link">'.comments_popup_link( __( '0 Comment', 'flat' ), __( '1 Comment', 'flat' ), __( '% Comments', 'flat' ) ) . '</span>';
-}
-
-function flat_paging_nav() {
-  // Don't print empty markup if there's only one page.
-  if ( $GLOBALS['wp_query']->max_num_pages < 2 ) {
-    return;
-  }
-
-  $paged        = get_query_var( 'paged' ) ? intval( get_query_var( 'paged' ) ) : 1;
-  $pagenum_link = html_entity_decode( get_pagenum_link() );
-  $query_args   = array();
-  $url_parts    = explode( '?', $pagenum_link );
-
-  if ( isset( $url_parts[1] ) ) {
-    wp_parse_str( $url_parts[1], $query_args );
-  }
-
-  $pagenum_link = remove_query_arg( array_keys( $query_args ), $pagenum_link );
-  $pagenum_link = trailingslashit( $pagenum_link ) . '%_%';
-
-  $format  = $GLOBALS['wp_rewrite']->using_index_permalinks() && ! strpos( $pagenum_link, 'index.php' ) ? 'index.php/' : '';
-  $format .= $GLOBALS['wp_rewrite']->using_permalinks() ? user_trailingslashit( 'page/%#%', 'paged' ) : '?paged=%#%';
-
-  // Set up paginated links.
-  $links = paginate_links( array(
-    'base'     => $pagenum_link,
-    'format'   => $format,
-    'total'    => $GLOBALS['wp_query']->max_num_pages,
-    'current'  => $paged,
-    'mid_size' => 4,
-    'add_args' => array_map( 'urlencode', $query_args ),
-    'prev_text' => __( '<i class="fa fa-chevron-left"></i>', 'flat' ),
-    'next_text' => __( '<i class="fa fa-chevron-right"></i>', 'flat' ),
-  ) );
-
-  if ( $links ) :
-
-  ?>
-  <nav class="navigation paging-navigation" role="navigation">
-    <div class="nav-links">
-      <?php echo $links; ?>
-    </div>
-  </nav>
-  <?php
-  endif;
-}
-
-if ( ! function_exists( 'flat_post_nav' ) ) :
-function flat_post_nav() {
-    global $post;
-    $previous = ( is_attachment() ) ? get_post( $post->post_parent ) : get_adjacent_post( false, '', true );
-    $next     = get_adjacent_post( false, '', false );
-
-    if ( ! $next && ! $previous )
-        return;
-    ?>
-    <nav class="navigation post-navigation" role="navigation">
-        <h1 class="screen-reader-text"><?php _e( 'Post navigation', 'flat' ); ?></h1>
-        <div class="nav-links">
-
-            <?php previous_post_link( '%link', _x( '<span class="meta-nav">&larr;</span> %title', 'Previous post link', 'flat' ) ); ?>
-            <?php next_post_link( '%link', _x( '%title <span class="meta-nav">&rarr;</span>', 'Next post link', 'flat' ) ); ?>
-
-        </div>
-    </nav>
-    <?php
-}
+if ( ! function_exists( 'flat_widgets_init' ) ) :
+	/**
+	 * Registers our sidebar with WordPress
+	 */
+	function flat_widgets_init() {
+		register_sidebar( array(
+			'name'          => __( 'Main Widget Area', 'flat' ),
+			'id'            => 'sidebar-1',
+			'description'   => __( 'Appears in the sidebar section of the site', 'flat' ),
+			'before_widget' => "\t\t\t\t\t" . '<aside id="%1$s" class="widget %2$s">' . "\n",
+			'after_widget'  => "\t\t\t\t\t</aside>\n",
+			'before_title'  => "\t\t\t\t\t\t<h3 class='widget-title'>",
+			'after_title'   => "</h3>\n",
+		) );
+	}
 endif;
 
-if ( ! function_exists( 'flat_wp_title' ) ) :
-function flat_wp_title( $title, $sep ) {
-  global $paged, $page;
+if ( ! function_exists( 'flat_scripts_styles' ) ) :
+	/**
+	 * Sets up necessary scripts and styles
+	 */
+	function flat_scripts_styles() {
+		global $wp_version;
 
-  if ( is_feed() ) {
-    return $title;
-  }
+		# Get the current version of Flat, even if a child theme is being used
+		$version = wp_get_theme( wp_get_theme()->template )->get( 'Version' );
 
-  $title .= get_bloginfo( 'name' );
-  $site_description = get_bloginfo( 'description', 'display' );
+		# When needed, enqueue comment-reply script
+		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+			wp_enqueue_script( 'comment-reply' );
+		}
 
-  if ( $site_description && ( is_home() || is_front_page() ) ) {
-    $title = "$title $sep $site_description";
-  }
+		# Minified versions of CSS & JS are used, unless a development constant is set
+		if ( defined( 'WP_ENV' ) && 'development' === WP_ENV ) {
+			$assets = array(
+				'css' => '/assets/css/flat.css',
+				'js'  => '/assets/js/flat.js',
+			);
+		} else {
+			$assets = array(
+				'css' => '/assets/css/flat.min.css',
+				'js'  => '/assets/js/flat.min.js',
+			);
+		}
 
-  if ( $paged >= 2 || $page >= 2 ) {
-    $title = sprintf( __( 'Page %s', 'flat' ), max( $paged, $page ) ) . " $sep $title";
-  }
+		wp_enqueue_style( 'flat-fonts', flat_fonts_url(), array(), null ); # Web fonts
+		wp_enqueue_style( 'flat-theme', get_template_directory_uri() . $assets['css'], array(), $version ); # Flat's styling
+		wp_enqueue_script( 'flat-js', get_template_directory_uri() . $assets['js'], array( 'jquery' ), $version, false ); # Flat's scripting
+		wp_enqueue_style( 'flat-style', get_stylesheet_uri() ); # Load main stylesheet, for child theme supports
 
-  return $title;
-}
+
+		# If the `script_loader_tag` filter is unavailable, this script will be added via the `wp_head` hook
+		if ( version_compare( '4.1', $wp_version, '<=' ) ) {
+			wp_enqueue_script( 'html5shiv', get_template_directory_uri() . '/assets/js/html5shiv.min.js', array(), '3.7.2', false );
+		}
+	}
 endif;
-add_filter( 'wp_title', 'flat_wp_title', 10, 2 );
 
-// Add Theme Customizer functionality.
-require get_template_directory() . '/inc/customizer.php';
+# The following function uses a filter introduced in WP 4.1
+if ( version_compare( '4.1', $wp_version, '<=' ) ) :
+	if ( ! function_exists( 'flat_filter_scripts' ) ) :
+		/**
+		 * Filters enqueued script output to better suit Flat's needs
+		 */
+		function flat_filter_scripts( $tag, $handle, $src ) {
+			# Remove `type` attribute (unneeded in HTML5)
+			$tag = str_replace( ' type=\'text/javascript\'', '', $tag );
+
+			# Apply conditionals to html5shiv for legacy IE
+			if ( 'html5shiv' === $handle ) {
+				$tag = "<!--[if lt IE 9]>\n$tag<![endif]-->\n";
+			}
+
+			return $tag;
+		}
+	endif;
+	add_filter( 'script_loader_tag', 'flat_filter_scripts', 10, 3 );
+else : # If the `script_loader_tag` filter is unavailable...
+	/**
+	 * Adds html5shiv the "old" way (WP < 4.1)
+	 */
+	function flat_add_html5shiv() {
+		echo "<!--[if lt IE 9]>\n<scr" . 'ipt src="' . esc_url( get_template_directory_uri() ) . '/assets/js/html5shiv.min.js"></scr' . "ipt>\n<![endif]-->"; # This is a hack to disguise adding the script without using WordPress' enqueue function
+	}
+	add_action( 'wp_head', 'flat_add_html5shiv' );
+endif;
+
+if ( ! function_exists( 'flat_filter_styles' ) ) :
+	/**
+	 * Filter enqueued style output to better suit HTML5
+	 */
+	function flat_filter_styles( $tag, $handle ) {
+		# Get rid of unnecessary `type` attribute
+		$tag = str_replace( ' type=\'text/css\'', '', $tag );
+
+		# Get rid of double-spaces
+		$tag = str_replace( '  ', ' ', $tag );
+
+		return $tag;
+	}
+endif;
+
+add_action('tgmpa_register', 'flat_register_required_plugins');
+
+function flat_register_required_plugins()
+{
+
+		$plugins = array(
+
+			array(
+	 
+				'name'      => 'WP Product Review',
+	 
+				'slug'      => 'wp-product-review',
+	 
+				'required'  => false,
+	 
+			)
+
+		);
+
+	 
+
+
+    $config = array(
+
+        'default_path' => '',
+
+        'menu' => 'tgmpa-install-plugins',
+
+        'has_notices' => true,
+
+        'dismissable' => true,
+
+        'dismiss_msg' => '',
+
+        'is_automatic' => false,
+
+        'message' => '',
+
+        'strings' => array(
+
+            'page_title' => __('Install Required Plugins', 'flat'),
+
+            'menu_title' => __('Install Plugins', 'flat'),
+
+            'installing' => __('Installing Plugin: %s', 'flat'),
+
+            'oops' => __('Something went wrong with the plugin API.', 'flat'),
+
+            'notice_can_install_required' => _n_noop('This theme requires the following plugin: %1$s.', 'This theme requires the following plugins: %1$s.','flat'),
+
+            'notice_can_install_recommended' => _n_noop('This theme recommends the following plugin: %1$s.', 'This theme recommends the following plugins: %1$s.','flat'),
+
+            'notice_cannot_install' => _n_noop('Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed.', 'Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed.','flat'),
+
+            'notice_can_activate_required' => _n_noop('The following required plugin is currently inactive: %1$s.', 'The following required plugins are currently inactive: %1$s.','flat'),
+
+            'notice_can_activate_recommended' => _n_noop('The following recommended plugin is currently inactive: %1$s.', 'The following recommended plugins are currently inactive: %1$s.','flat'),
+
+            'notice_cannot_activate' => _n_noop('Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of this site for help on getting the plugin activated.', 'Sorry, but you do not have the correct permissions to activate the %s plugins. Contact the administrator of this site for help on getting the plugins activated.','flat'),
+
+            'notice_ask_to_update' => _n_noop('The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s.', 'The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s.','flat'),
+
+            'notice_cannot_update' => _n_noop('Sorry, but you do not have the correct permissions to update the %s plugin. Contact the administrator of this site for help on getting the plugin updated.', 'Sorry, but you do not have the correct permissions to update the %s plugins. Contact the administrator of this site for help on getting the plugins updated.','flat'),
+
+            'install_link' => _n_noop('Begin installing plugin', 'Begin installing plugins','flat'),
+
+            'activate_link' => _n_noop('Begin activating plugin', 'Begin activating plugins','flat'),
+
+            'return' => __('Return to Required Plugins Installer', 'flat'),
+
+            'plugin_activated' => __('Plugin activated successfully.', 'flat'),
+
+            'complete' => __('All plugins installed and activated successfully. %s', 'flat'),
+
+            'nag_type' => 'updated'
+
+        )
+
+    );
+
+
+    tgmpa($plugins, $config);
+
+
+}
+/**
+ * Enhances "Read more..." links with Bootstrap button styling
+ */
+function modify_read_more_link() {
+	return '<a class="btn btn-default btn-sm" href="' . esc_url( get_permalink() ) . '">' . sprintf( __( 'Continue reading %s', 'flat' ), '<i class="fa fa-angle-double-right"></i></a>' );
+}
